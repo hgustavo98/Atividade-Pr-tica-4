@@ -47,7 +47,7 @@ def cliente_chat():
                     print("Você precisa entrar em uma sala primeiro.")
             elif escolha == "5":
                 if sala_atual:
-                    mensagens = servidor.Listar_mensagens(sala_atual)
+                    mensagens = servidor.Listar_mensagens(usuario_id, sala_atual)
                     print("\nMensagens públicas:")
                     if mensagens:
                         for mensagem, usuario, timestamp in mensagens:
@@ -60,8 +60,11 @@ def cliente_chat():
                 if sala_atual:
                     usuarios = servidor.Listar_usuarios(sala_atual)
                     print("\nUsuários ativos:")
-                    for usuario in usuarios:
-                        print(f"- {usuario['nome']} (ID: {usuario['id']})")
+                    if isinstance(usuarios, str):
+                        print(usuarios)
+                    else:
+                        for usuario in usuarios:
+                            print(f"- {usuario['nome']} (ID: {usuario['id']})")
                     try:
                         destinatario_id = int(input("\nDigite o ID do destinatário: "))
                         mensagem = input("Digite a mensagem privada: ")
@@ -74,11 +77,11 @@ def cliente_chat():
                 if sala_atual:
                     usuarios = servidor.Listar_usuarios(sala_atual)
                     print("\nUsuários ativos na sala:")
-                    if usuarios:
+                    if isinstance(usuarios, str):
+                        print(usuarios)
+                    else:
                         for usuario in usuarios:
                             print(f"- {usuario['nome']} (ID: {usuario['id']})")
-                    else:
-                        print("Nenhum usuário ativo no momento.")
                 else:
                     print("Você precisa entrar em uma sala primeiro.")
             elif escolha == "8":
